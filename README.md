@@ -1,6 +1,6 @@
 ## ChatGPT Telegram Bot
 
-This is a simple telegram bot that allows users to communicate with an instance of OpenAI's GPT fully trained on conversational data.
+A simple Telegram bot that allows users to communicate with OpenAI's ChatGPT
 
 ### Getting Started
 
