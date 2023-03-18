@@ -19,7 +19,7 @@ record CompletionResponse(
 
 record Choice(
         Long index,
-        Message message,
+        ChatGptMessage message,
         String finish_reason
 ) {
 

@@ -1,6 +1,6 @@
 package bot.chatgpt;
 
-record Message(
+public record ChatGptMessage(
         String role,
         String content
 ) {

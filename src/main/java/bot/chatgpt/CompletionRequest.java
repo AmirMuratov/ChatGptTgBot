@@ -4,6 +4,8 @@ import java.util.List;
 
 record CompletionRequest(
         String model,
-        List<Message> messages
+        List<ChatGptMessage> messages,
+        Double temperature,
+        Double top_p
 ) {
 }

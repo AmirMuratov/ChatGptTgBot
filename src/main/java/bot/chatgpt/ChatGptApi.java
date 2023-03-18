@@ -44,7 +44,6 @@ public class ChatGptApi {
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
         logger.info("Request: " + httpRequest);
-        logger.info("Request headers: " + httpRequest.headers());
         logger.info("Request body: " + body);
 
         return httpRequest;
@@ -52,6 +51,7 @@ public class ChatGptApi {
 
     private Optional<CompletionResponse> parseBody(HttpResponse<String> body) {
         try {
+            logger.info("Response: {}", body.body());
             final var mapper = new ObjectMapper();
             final var parsedResponse = mapper.readValue(body.body(), CompletionResponse.class);
             return Optional.of(parsedResponse);
@@ -61,8 +61,8 @@ public class ChatGptApi {
         }
     }
 
-    public CompletableFuture<String> getResponse(String message) {
-        final var request = new CompletionRequest(config.openAiModel(), List.of(new Message("user", message)));
+    public CompletableFuture<String> getResponse(List<ChatGptMessage> chat) {
+        final var request = new CompletionRequest(config.openAiModel(), chat, config.openAiTemperature(), config.openAiTopP());
         final var httpRequest = mkRequest(request);
 
         return httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
