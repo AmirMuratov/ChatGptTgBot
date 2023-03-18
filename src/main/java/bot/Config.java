@@ -1,5 +1,8 @@
 package bot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,4 +18,15 @@ public record Config(
         Optional<String> chatGptsRole,
         Integer chatHistorySize
 ) {
+
+    public String prettyPrint() {
+        final var mapper = new ObjectMapper();
+        mapper.registerModule(new Jdk8Module());
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
 }

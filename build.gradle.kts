@@ -21,6 +21,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
     implementation("ch.qos.logback:logback-classic:1.4.6")
     implementation("org.slf4j:jul-to-slf4j:2.0.6")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.14.0")
 }
 
 tasks.getByName<Test>("test") {

@@ -88,6 +88,21 @@ public class TgBot extends TelegramLongPollingBot {
         }
     }
 
+    private void handleCommandMessage(User user, Long chatId, String message) {
+        switch (message) {
+            case "/clean" -> {
+                logger.info("Cleaning chat history for {}", extractUsername(user));
+                chatsHistoryCache.remove(chatId);
+                trySendMessage(mkMessageToSend(chatId, "Cache cleared"));
+            }
+            case "/config" -> {
+                logger.info("Responding with config to {}", extractUsername(user));
+                trySendMessage(mkMessageToSend(chatId, config.prettyPrint()));
+            }
+            default -> logger.info("Unknown command from {}: {}", extractUsername(user), message);
+        }
+    }
+
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText() && isInWhitelist(update.getMessage().getFrom())) {
@@ -96,13 +111,18 @@ public class TgBot extends TelegramLongPollingBot {
             var user = update.getMessage().getFrom();
 
             logger.info("Got message from {}, in chat {}: {}", extractUsername(user), chatId, message);
-            api.getResponse(assembleChatHistory(chatId, message))
-                    .thenApplyAsync(response -> {
-                        updateChatHistory(chatId, message, response);
-                        return response;
-                    })
-                    .thenApplyAsync(response -> mkMessageToSend(chatId, response))
-                    .thenComposeAsync(this::trySendMessage);
+
+            if (message.startsWith("/")) {
+                handleCommandMessage(user, chatId, message);
+            } else {
+                api.getResponse(assembleChatHistory(chatId, message))
+                        .thenApplyAsync(response -> {
+                            updateChatHistory(chatId, message, response);
+                            return response;
+                        })
+                        .thenApplyAsync(response -> mkMessageToSend(chatId, response))
+                        .thenComposeAsync(this::trySendMessage);
+            }
         }
     }
 

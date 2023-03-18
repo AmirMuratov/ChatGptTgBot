@@ -71,7 +71,7 @@ public class Main {
             final var config = readConfigFromEnv();
 
             logger.info("Starting ChatGPT Telegram bot");
-            logger.info("Configuration: " + config);
+            logger.info("Configuration: " + config.prettyPrint());
 
             final var api = new ChatGptApi(config);
 
