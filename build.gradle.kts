@@ -22,6 +22,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.6")
     implementation("org.slf4j:jul-to-slf4j:2.0.6")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.14.0")
+    implementation("org.apache.httpcomponents:httpmime:4.5.14")
+    implementation("io.vavr:vavr:0.10.4")
 }
 
 tasks.getByName<Test>("test") {

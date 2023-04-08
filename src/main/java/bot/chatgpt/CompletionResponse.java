@@ -16,6 +16,10 @@ record CompletionResponse(
 ) {
 }
 
+@JsonSerialize
+record TranscriptionCompletionResponse(String text) {
+}
+
 
 record Choice(
         Long index,

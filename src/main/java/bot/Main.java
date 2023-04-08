@@ -4,6 +4,7 @@ import bot.chatgpt.ChatGptApi;
 import bot.tgbot.TgBot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.facilities.filedownloader.TelegramFileDownloader;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
@@ -76,7 +77,8 @@ public class Main {
             final var api = new ChatGptApi(config);
 
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-            telegramBotsApi.registerBot(new TgBot(config, api));
+            TelegramFileDownloader fileDownloader = new TelegramFileDownloader(config::tgToken);
+            telegramBotsApi.registerBot(new TgBot(config, api, fileDownloader));
         } catch (Exception e) {
             logger.error("Failed to start Chat GPT bot", e);
         }
